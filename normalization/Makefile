@@ -1,7 +1,12 @@
+CPPFLAGS=$(CXXFLAGS) -O3 -Wall -Wextra -pedantic -std=c++11 -march=native
+
 all: test
 
 find: find.cpp
-	$(CXX) -O3 $< -o $@
+	$(CXX) $(CPPFLAGS) $< -o $@
+
+unittest: unittest.cpp sse.c
+	$(CXX) $(CPPFLAGS) $< -o $@
 
 parameters.txt: find
 	./find > $@

@@ -2,5 +2,9 @@
 *.o
 *.pyc
 
-find
+# generated files
 sse.c
+
+# executables
+find
+unittest

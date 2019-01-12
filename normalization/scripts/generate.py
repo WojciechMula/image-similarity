@@ -45,6 +45,13 @@ class Application():
         for value in xrange(1, 16):
             algo3[value] = self.generate_pshufbased(value)
 
+        algo4 = {}
+        for value in xrange(1, 254):
+            if value in algo1 or value in algo2 or value in algo3:
+                continue
+
+            algo4[value] = self.generate_scalar(value)
+
 
         with open(self.srcpath, 'wt') as f:
             def writeln(s):
@@ -69,6 +76,7 @@ class Application():
             write_declarations(algo1);
             write_declarations(algo2);
             write_declarations(algo3);
+            write_declarations(algo4);
 
             # 2. lookup
             writeln('typedef void (*normalize_values_inplace_fn)(uint8_t* data, size_t s);')
@@ -92,11 +100,13 @@ class Application():
             write_lookup('algorithm1', algo1)
             write_lookup('algorithm2', algo2)
             write_lookup('algorithm3', algo3)
+            write_lookup('algorithm4', algo4)
 
             # 3. implementations
             write_implementations(algo1)
             write_implementations(algo2)
             write_implementations(algo3)
+            write_implementations(algo4)
 
 
     def load(self, file):
@@ -172,6 +182,16 @@ class Application():
         }
 
         return (data['name'], PSHUFB_ALGORITHM % data)
+
+
+    def generate_scalar(self, value):
+
+        data = {
+            'name'  : ('normalize_scalar_%d' % value),
+            'value' : ('%d' % value)
+        }
+
+        return (data['name'], SCALAR_ALGORITHM % data)
 
 
 main()

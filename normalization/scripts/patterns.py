@@ -115,3 +115,13 @@ void %(name)s(uint8_t* data, size_t size) {
     }
 }
 """
+
+SCALAR_ALGORITHM="""
+void %(name)s(uint8_t* data, size_t size) {
+
+    const double scale = 255.0 / %(value)s;
+    for (size_t i=0; i < size; i++)
+        data[i] = scale * data[i];
+}
+"""
+

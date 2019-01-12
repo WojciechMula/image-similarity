@@ -76,6 +76,16 @@ private:
             }
         }
 
+        if (algorithm4[value] != nullptr) {
+            printf(" algorithm4"); fflush(stdout);
+            memcpy(input, input_reference, size);
+            algorithm4[value](input, size);
+
+            if (memcmp(input, output_reference, size) != 0) {
+                throw Failed{};
+            }
+        }
+
         putchar('\n');
     }
 

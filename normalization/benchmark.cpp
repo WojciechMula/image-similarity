@@ -41,6 +41,14 @@ public:
                 BEST_TIME(/**/, fun(input, size), name, repeat, size);
             }
         }
+
+        for (int i=0; i < 256; i++) {
+            normalize_values_inplace_fn fun(algorithm4[i]);
+            if (fun != NULL) {
+                snprintf(name, sizeof(name), "algorithm4_%d", i);
+                BEST_TIME(/**/, fun(input, size), name, repeat, size);
+            }
+        }
     }
 
 };

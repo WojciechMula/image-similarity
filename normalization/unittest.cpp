@@ -3,7 +3,6 @@
 #include <cstdio>
 
 #include "../ansi.cpp"
-#include "sse-test.c"
 #include "scalar.c"
 
 

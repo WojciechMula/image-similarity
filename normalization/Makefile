@@ -1,4 +1,5 @@
 CPPFLAGS=$(CXXFLAGS) -O3 -Wall -Wextra -pedantic -std=c++11 -march=native
+FLAGS=$(CFLAGS) -O3 -march=native -std=c99
 
 all: test
 
@@ -10,6 +11,12 @@ unittest: unittest.cpp sse-test.c
 
 benchmark: benchmark.cpp sse-test.c ../benchmark.h
 	$(CXX) $(CPPFLAGS) $< -o $@
+
+speed: speed.cpp scalar.o ../benchmark.h
+	$(CXX) $(CPPFLAGS) $< scalar.o -o $@
+
+scalar.o: scalar.c
+	$(CC) $(FLAGS) $< -c -o $@
 
 parameters.txt: find
 	./find > $@

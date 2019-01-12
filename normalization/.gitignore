@@ -10,3 +10,4 @@ sse-test.c
 find
 unittest
 benchmark
+speed

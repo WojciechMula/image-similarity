@@ -1,7 +1,8 @@
-#include <stdint.h>
-#include <stddef.h>
+#include "scalar.h"
+
 #include <string.h>
 
+static
 void find_bounds_scalar(uint8_t* data, size_t n, uint8_t* low, uint8_t* range) {
     
     uint8_t max = data[0];

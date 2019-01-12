@@ -5,6 +5,7 @@
 
 # generated files
 sse-test.c
+sse-implementation.c
 
 # executables
 find

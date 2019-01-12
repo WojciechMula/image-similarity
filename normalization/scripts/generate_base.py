@@ -5,6 +5,10 @@ from patterns import *
 class ApplicationBase(object):
     def __init__(self, path):
         self.path = path
+        self.algorithm1_pattern = 'generated__normalize_sse1_%(value)s'
+        self.algorithm2_pattern = 'generated__normalize_sse2_%(value)s'
+        self.pshufb_pattern     = 'generated__pshufb_%(value)s'
+        self.scalar_pattern     = 'generated__scalar_%(value)s'
 
 
     def load(self):
@@ -32,6 +36,20 @@ class ApplicationBase(object):
                 algorithm[value] = []
 
             algorithm[value].append((scale, shift))
+
+
+    def simplify(self, parameters):
+        # If for given value we have shift = 0, then we obviously might
+        # pick shorter code. In such case remove all other variants
+        for value in parameters:
+            params = parameters[value]
+
+            def shorter_alternative():
+                return any(True for scale, shift in params if shift == 0)
+
+            if shorter_alternative():
+                #print "value = %d" % value
+                parameters[value] = [(scale, 0) for scale, shift in params if shift == 0]
 
 
     def generate_procedures(self, parameters, name_pattern, code_pattern_generic, code_pattern_no_shift):
@@ -70,19 +88,19 @@ class ApplicationBase(object):
             values[i] = int(i * (255.0 / value))
 
         values_fmt = ', '.join(('%d' % x) for x in values)
-        data = {
-            'name': 'normalize_pshufb_%d' % value,
-            'lookup_values' : values_fmt,
-        }
+        data = {}
+
+        data['value'] = '%d' % value
+        data['name']  = self.pshufb_pattern % data
+        data['lookup_values'] = values_fmt
 
         return (data['name'], PSHUFB_ALGORITHM % data)
 
 
     def generate_scalar(self, value):
 
-        data = {
-            'name'  : ('normalize_scalar_%d' % value),
-            'value' : ('%d' % value)
-        }
+        data = {}
+        data['value'] = '%d' % value
+        data['name']  = self.scalar_pattern % data
 
         return (data['name'], SCALAR_ALGORITHM % data)

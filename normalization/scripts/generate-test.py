@@ -108,18 +108,5 @@ class Application(ApplicationBase):
             write_implementations(algo4)
 
 
-    def simplify(self, parameters):
-        # If for given value we have shift = 0, then we obviously might
-        # pick shorter code. In such case remove all other variants
-        for value in parameters:
-            params = parameters[value]
-
-            def shorter_alternative():
-                return any(True for scale, shift in params if shift == 0)
-
-            if shorter_alternative():
-                print "value = %d" % value
-                parameters[value] = [(scale, 0) for scale, shift in params if shift == 0]
-
-
-main()
+if __name__ == '__main__':
+    main()

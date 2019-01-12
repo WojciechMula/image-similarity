@@ -1,6 +1,7 @@
-#include "scalar.h"
+#include "sse.h"
 
-#include <string.h>
+#include <immintrin.h>
+#include "sse-implementation.c"
 
 static
 void find_bounds_scalar(uint8_t* data, size_t n, uint8_t* low, uint8_t* range) {
@@ -20,8 +21,7 @@ void find_bounds_scalar(uint8_t* data, size_t n, uint8_t* low, uint8_t* range) {
     *range = max - min;
 }
 
-
-void normalize_scalar(uint8_t* data, size_t n) {
+void normalize_sse(uint8_t* data, size_t n) {
 
     uint8_t min;
     uint8_t range;
@@ -37,8 +37,5 @@ void normalize_scalar(uint8_t* data, size_t n) {
         return;
     }
 
-    double scale = 255.0 / range;
-
-    for (size_t i=0; i < n; i++)
-        data[i] = (scale) * (data[i] - min);
+    normalize_function_lookup[range](data, n);
 }

@@ -2,7 +2,11 @@
 #include <cstring>
 
 #include "../benchmark.h"
-#include "scalar.c"
+
+extern "C" {
+#   include "scalar.h"
+#   include "sse.h"
+}
 
 class Benchmark {
 
@@ -13,7 +17,7 @@ class Benchmark {
 
 public:
     void run() {
-        const size_t repeat = 10000;
+        const size_t repeat = 100;
 
         BEST_TIME(/**/, test_empty(),  "empty",  repeat, count * size);
         BEST_TIME(/**/, test_scalar(), "scalar", repeat, count * size);
@@ -44,7 +48,7 @@ private:
     void test_SSE() {
         prepare_input();
         for (int i=0; i < 256; i++) {
-            // TODO
+            normalize_sse(&input[i][0], size);
         }
     }
 

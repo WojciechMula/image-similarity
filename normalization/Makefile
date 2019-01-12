@@ -12,10 +12,13 @@ unittest: unittest.cpp sse-test.c
 benchmark: benchmark.cpp sse-test.c ../benchmark.h
 	$(CXX) $(CPPFLAGS) $< -o $@
 
-speed: speed.cpp scalar.o ../benchmark.h
-	$(CXX) $(CPPFLAGS) $< scalar.o -o $@
+speed: speed.cpp scalar.o sse.o ../benchmark.h
+	$(CXX) $(CPPFLAGS) scalar.o sse.o $< -o $@
 
 scalar.o: scalar.c
+	$(CC) $(FLAGS) $< -c -o $@
+
+sse.o: sse.c sse-implementation.c
 	$(CC) $(FLAGS) $< -c -o $@
 
 parameters.txt: find
@@ -24,8 +27,8 @@ parameters.txt: find
 sse-test.c: scripts/generate-test.py scripts/generate_base.py scripts/patterns.py parameters.txt
 	python scripts/generate-test.py parameters.txt $@
 
-sse-implementation.c: scripts/generate.py scripts/generate_base.py scripts/patterns.py parameters.txt
-	python scripts/generate.py parameters.txt $@
+sse-implementation.c: scripts/generate-impl.py scripts/generate_base.py scripts/patterns.py parameters.txt
+	python scripts/generate-impl.py parameters.txt $@
 
 test: sse-test.c
 	$(CXX) -c -march=native $<

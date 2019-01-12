@@ -101,3 +101,17 @@ void %(name)s(uint8_t* data, size_t size) {
     }
 }
 """
+
+PSHUFB_ALGORITHM="""
+void %(name)s(uint8_t* data, size_t size) {
+
+    const __m128i lookup = _mm_setr_epi8(%(lookup_values)s);
+
+    for (size_t i=0; i < size; i += 16) {
+        const __m128i input = _mm_loadu_si128((const __m128i*)(data + i));
+
+        const __m128i res = _mm_shuffle_epi8(lookup, input);
+        _mm_store_si128((__m128i*)(data + i), res);
+    }
+}
+"""

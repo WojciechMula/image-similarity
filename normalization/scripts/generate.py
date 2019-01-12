@@ -41,6 +41,11 @@ class Application():
                     ALGORITHM2_PATTERN_GENERIC,
                     ALGORITHM2_PATTERN_NO_SHIFT)
 
+        algo3 = {}
+        for value in xrange(1, 16):
+            algo3[value] = self.generate_pshufbased(value)
+
+
         with open(self.srcpath, 'wt') as f:
             def writeln(s):
                 f.write(s)
@@ -52,12 +57,18 @@ class Application():
             writeln('#include <stddef.h>')
             writeln('#include <immintrin.h>')
 
-            # 1. declarations
-            for value in sorted(algo1):
-                writeln(DECLARATION % {'name': algo1[value][0]})
+            def write_declarations(algorithms):
+                for value in sorted(algorithms):
+                    writeln(DECLARATION % {'name': algorithms[value][0]})
 
-            for value in sorted(algo2):
-                writeln(DECLARATION % {'name': algo2[value][0]})
+            def write_implementations(algorithms):
+                for value in sorted(algorithms):
+                    write(algorithms[value][1])
+
+            # 1. declarations
+            write_declarations(algo1);
+            write_declarations(algo2);
+            write_declarations(algo3);
 
             # 2. lookup
             writeln('typedef void (*normalize_values_inplace_fn)(uint8_t* data, size_t s);')
@@ -80,14 +91,12 @@ class Application():
 
             write_lookup('algorithm1', algo1)
             write_lookup('algorithm2', algo2)
+            write_lookup('algorithm3', algo3)
 
             # 3. implementations
-            for value in sorted(algo1):
-                write(algo1[value][1])
-
-            for value in sorted(algo2):
-                write(algo2[value][1])
-
+            write_implementations(algo1)
+            write_implementations(algo2)
+            write_implementations(algo3)
 
 
     def load(self, file):
@@ -117,10 +126,10 @@ class Application():
         for value in parameters:
             params = parameters[value]
 
-            def shorter_alternatrive():
+            def shorter_alternative():
                 return any(True for scale, shift in params if shift == 0)
 
-            if shorter_alternatrive():
+            if shorter_alternative():
                 print "value = %d" % value
                 parameters[value] = [(scale, 0) for scale, shift in params if shift == 0]
 
@@ -147,6 +156,22 @@ class Application():
             procedures[value] = (data['name'], code);
 
         return procedures
+
+
+    def generate_pshufbased(self, value):
+        assert 1 <= value < 16
+
+        values = [0] * 16
+        for i in xrange(value + 1):
+            values[i] = int(i * (255.0 / value))
+
+        values_fmt = ', '.join(('%d' % x) for x in values)
+        data = {
+            'name': 'normalize_pshufb_%d' % value,
+            'lookup_values' : values_fmt,
+        }
+
+        return (data['name'], PSHUFB_ALGORITHM % data)
 
 
 main()

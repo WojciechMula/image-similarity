@@ -25,7 +25,7 @@ public:
     bool run() {
         prepare_input();
         try {
-            for (value=16; value <= 254; value++) {
+            for (value=1; value <= 254; value++) {
                 printf("Testing range [0 .. %d]", value); fflush(stdout);
                 test();
             }
@@ -60,6 +60,16 @@ private:
             printf(" algorithm2"); fflush(stdout);
             memcpy(input, input_reference, size);
             algorithm2[value](input, size);
+
+            if (memcmp(input, output_reference, size) != 0) {
+                throw Failed{};
+            }
+        }
+
+        if (algorithm3[value] != nullptr) {
+            printf(" algorithm3"); fflush(stdout);
+            memcpy(input, input_reference, size);
+            algorithm3[value](input, size);
 
             if (memcmp(input, output_reference, size) != 0) {
                 throw Failed{};

@@ -8,6 +8,9 @@ find: find.cpp
 unittest: unittest.cpp sse.c
 	$(CXX) $(CPPFLAGS) $< -o $@
 
+benchmark: benchmark.cpp sse.c ../benchmark.h
+	$(CXX) $(CPPFLAGS) $< -o $@
+
 parameters.txt: find
 	./find > $@
 

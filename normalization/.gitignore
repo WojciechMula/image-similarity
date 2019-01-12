@@ -1,6 +1,7 @@
 *.txt
 *.o
 *.pyc
+.gdb_history
 
 # generated files
 sse.c
@@ -8,3 +9,4 @@ sse.c
 # executables
 find
 unittest
+benchmark

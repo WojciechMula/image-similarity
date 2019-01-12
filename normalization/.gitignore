@@ -1,0 +1,6 @@
+*.txt
+*.o
+*.pyc
+
+find
+sse.c

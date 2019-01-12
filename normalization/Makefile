@@ -5,17 +5,17 @@ all: test
 find: find.cpp
 	$(CXX) $(CPPFLAGS) $< -o $@
 
-unittest: unittest.cpp sse.c
+unittest: unittest.cpp sse-test.c
 	$(CXX) $(CPPFLAGS) $< -o $@
 
-benchmark: benchmark.cpp sse.c ../benchmark.h
+benchmark: benchmark.cpp sse-test.c ../benchmark.h
 	$(CXX) $(CPPFLAGS) $< -o $@
 
 parameters.txt: find
 	./find > $@
 
-sse.c: scripts/generate.py scripts/patterns.py parameters.txt
+sse-test.c: scripts/generate.py scripts/patterns.py parameters.txt
 	python scripts/generate.py parameters.txt $@
 
-test: sse.c
+test: sse-test.c
 	$(CXX) -c -march=native $<

@@ -1,9 +1,7 @@
 #include <cstdio>
 #include "../benchmark.h"
 
-extern "C" {
-    #include "sse.c"
-}
+#include "sse-test.c"
 
 
 class Benchmark {

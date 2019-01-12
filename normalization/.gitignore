@@ -4,7 +4,7 @@
 .gdb_history
 
 # generated files
-sse.c
+sse-test.c
 
 # executables
 find

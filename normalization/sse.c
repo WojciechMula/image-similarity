@@ -1,6 +1,8 @@
 #include "sse.h"
 
 #include <immintrin.h>
+#include <string.h>
+#include <stdio.h>
 #include "sse-implementation.c"
 
 static
@@ -37,5 +39,5 @@ void normalize_sse(uint8_t* data, size_t n) {
         return;
     }
 
-    normalize_function_lookup[range](data, n);
+    normalize_function_lookup[range](min, data, n);
 }

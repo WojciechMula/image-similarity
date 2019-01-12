@@ -20,7 +20,7 @@ public:
             normalize_values_inplace_fn fun(algorithm1[i]);
             if (fun != NULL) {
                 snprintf(name, sizeof(name), "algorithm1_%d", i);
-                BEST_TIME(/**/, fun(input, size), name, repeat, size);
+                BEST_TIME(/**/, fun(0, input, size), name, repeat, size);
             }
         }
 
@@ -28,7 +28,7 @@ public:
             normalize_values_inplace_fn fun(algorithm2[i]);
             if (fun != NULL) {
                 snprintf(name, sizeof(name), "algorithm2_%d", i);
-                BEST_TIME(/**/, fun(input, size), name, repeat, size);
+                BEST_TIME(/**/, fun(0, input, size), name, repeat, size);
             }
         }
 
@@ -36,7 +36,7 @@ public:
             normalize_values_inplace_fn fun(algorithm3[i]);
             if (fun != NULL) {
                 snprintf(name, sizeof(name), "algorithm3_%d", i);
-                BEST_TIME(/**/, fun(input, size), name, repeat, size);
+                BEST_TIME(/**/, fun(0, input, size), name, repeat, size);
             }
         }
 
@@ -44,7 +44,7 @@ public:
             normalize_values_inplace_fn fun(algorithm4[i]);
             if (fun != NULL) {
                 snprintf(name, sizeof(name), "algorithm4_%d", i);
-                BEST_TIME(/**/, fun(input, size), name, repeat, size);
+                BEST_TIME(/**/, fun(0, input, size), name, repeat, size);
             }
         }
     }

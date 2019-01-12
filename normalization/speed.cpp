@@ -13,11 +13,13 @@ class Benchmark {
     static const size_t size = 32 * 32;
     static const size_t count = 256;
 
+    uint8_t reference[count][size];
     uint8_t input[count][size];
 
 public:
     void run() {
-        const size_t repeat = 100;
+        const size_t repeat = 1000;
+        prepare_input();
 
         BEST_TIME(/**/, test_empty(),  "empty",  repeat, count * size);
         BEST_TIME(/**/, test_scalar(), "scalar", repeat, count * size);
@@ -26,27 +28,29 @@ public:
 
 private:
     void prepare_input() {
-        for (int i=0; i < 256; i++) {
-            memset(&input[i], i, size);
+        for (size_t i=0; i < count; i++) {
+            for (size_t j=0; j < size; j++) {
+                reference[i][j] = j % (i + 1);
+            }
         }
     }
 
     void test_empty() {
-        prepare_input();
+        memcpy(input, reference, size * count);
         for (int i=0; i < 256; i++) {
             // deliberately nop
         }
     }
 
     void test_scalar() {
-        prepare_input();
+        memcpy(input, reference, size * count);
         for (int i=0; i < 256; i++) {
             normalize_scalar(&input[i][0], size);
         }
     }
 
     void test_SSE() {
-        prepare_input();
+        memcpy(input, reference, size * count);
         for (int i=0; i < 256; i++) {
             normalize_sse(&input[i][0], size);
         }

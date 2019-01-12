@@ -78,7 +78,7 @@ class Application(ApplicationBase):
             write_declarations(algo4);
 
             # 2. lookup
-            writeln('typedef void (*normalize_values_inplace_fn)(uint8_t* data, size_t s);')
+            writeln('typedef void (*normalize_values_inplace_fn)(uint8_t, uint8_t*, size_t);')
 
             def write_lookup(name, code):
                 writeln('normalize_values_inplace_fn %s[256] = {' % name)

@@ -2,6 +2,7 @@
 *.o
 *.pyc
 .gdb_history
+perf.data*
 
 # generated files
 sse-test.c

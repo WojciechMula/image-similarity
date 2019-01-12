@@ -65,7 +65,7 @@ class Application(ApplicationBase):
                 if name:
                     writeln(DECLARATION % {'name': name})
 
-            writeln('typedef void (*normalize_values_inplace_fn)(uint8_t* data, size_t s);')
+            writeln('typedef void (*normalize_values_inplace_fn)(uint8_t, uint8_t*, size_t);')
             writeln('normalize_values_inplace_fn normalize_function_lookup[256] = {')
             for i, (name, code) in enumerate(program):
                 write('\t')

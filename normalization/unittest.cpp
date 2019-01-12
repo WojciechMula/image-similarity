@@ -49,7 +49,7 @@ private:
         if (algorithm1[value] != nullptr) {
             printf(" algorithm1"); fflush(stdout);
             memcpy(input, input_reference, size);
-            algorithm1[value](input, size);
+            algorithm1[value](0, input, size);
 
             if (memcmp(input, output_reference, size) != 0) {
                 throw Failed{};
@@ -59,7 +59,7 @@ private:
         if (algorithm2[value] != nullptr) {
             printf(" algorithm2"); fflush(stdout);
             memcpy(input, input_reference, size);
-            algorithm2[value](input, size);
+            algorithm2[value](0, input, size);
 
             if (memcmp(input, output_reference, size) != 0) {
                 throw Failed{};
@@ -69,7 +69,7 @@ private:
         if (algorithm3[value] != nullptr) {
             printf(" algorithm3"); fflush(stdout);
             memcpy(input, input_reference, size);
-            algorithm3[value](input, size);
+            algorithm3[value](0, input, size);
 
             if (memcmp(input, output_reference, size) != 0) {
                 throw Failed{};
@@ -79,7 +79,7 @@ private:
         if (algorithm4[value] != nullptr) {
             printf(" algorithm4"); fflush(stdout);
             memcpy(input, input_reference, size);
-            algorithm4[value](input, size);
+            algorithm4[value](0, input, size);
 
             if (memcmp(input, output_reference, size) != 0) {
                 throw Failed{};

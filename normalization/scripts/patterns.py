@@ -1,12 +1,14 @@
-DECLARATION="void %(name)s(uint8_t* data, size_t size);"
+DECLARATION="void %(name)s(uint8_t minval, uint8_t* data, size_t size);"
 
 ALGORITHM1_PATTERN_GENERIC="""
-void %(name)s(uint8_t* data, size_t size) {
+void %(name)s(uint8_t minval, uint8_t* data, size_t size) {
 
     const __m128i scale = _mm_set1_epi16(%(scale)s);
+    const __m128i lo    = _mm_set1_epi8(minval);
 
     for (size_t i=0; i < size; i += 16) {
-        const __m128i input = _mm_loadu_si128((const __m128i*)(data + i));
+        const __m128i raw = _mm_loadu_si128((const __m128i*)(data + i));
+        const __m128i input = _mm_sub_epi8(raw, lo);
 
         // convert 8-bit array into two 16-bit arrays
         const __m128i in0 = _mm_cvtepu8_epi16(input);
@@ -28,12 +30,14 @@ void %(name)s(uint8_t* data, size_t size) {
 """
 
 ALGORITHM1_PATTERN_NO_SHIFT="""
-void %(name)s(uint8_t* data, size_t size) {
+void %(name)s(uint8_t minval, uint8_t* data, size_t size) {
 
     const __m128i scale = _mm_set1_epi16(%(scale)s);
+    const __m128i lo    = _mm_set1_epi8(minval);
 
     for (size_t i=0; i < size; i += 16) {
-        const __m128i input = _mm_loadu_si128((const __m128i*)(data + i));
+        const __m128i raw = _mm_loadu_si128((const __m128i*)(data + i));
+        const __m128i input = _mm_sub_epi8(raw, lo);
 
         // convert 8-bit array into two 16-bit arrays
         const __m128i in0 = _mm_cvtepu8_epi16(input);
@@ -51,12 +55,14 @@ void %(name)s(uint8_t* data, size_t size) {
 """
 
 ALGORITHM2_PATTERN_GENERIC="""
-void %(name)s(uint8_t* data, size_t size) {
+void %(name)s(uint8_t minval, uint8_t* data, size_t size) {
 
     const __m128i scale = _mm_set1_epi16(%(scale)s);
+    const __m128i lo    = _mm_set1_epi8(minval);
 
     for (size_t i=0; i < size; i += 16) {
-        const __m128i input = _mm_loadu_si128((const __m128i*)(data + i));
+        const __m128i raw = _mm_loadu_si128((const __m128i*)(data + i));
+        const __m128i input = _mm_sub_epi8(raw, lo);
 
         // convert 8-bit values to 16-bit multiplied by 256
         // X[i] = (uint16_t)x[i] * 256
@@ -79,12 +85,14 @@ void %(name)s(uint8_t* data, size_t size) {
 """
 
 ALGORITHM2_PATTERN_NO_SHIFT="""
-void %(name)s(uint8_t* data, size_t size) {
+void %(name)s(uint8_t minval, uint8_t* data, size_t size) {
 
     const __m128i scale = _mm_set1_epi16(%(scale)s);
+    const __m128i lo    = _mm_set1_epi8(minval);
 
     for (size_t i=0; i < size; i += 16) {
-        const __m128i input = _mm_loadu_si128((const __m128i*)(data + i));
+        const __m128i raw = _mm_loadu_si128((const __m128i*)(data + i));
+        const __m128i input = _mm_sub_epi8(raw, lo);
 
         // convert 8-bit values to 16-bit multiplied by 256
         // X[i] = (uint16_t)x[i] * 256
@@ -103,12 +111,14 @@ void %(name)s(uint8_t* data, size_t size) {
 """
 
 PSHUFB_ALGORITHM="""
-void %(name)s(uint8_t* data, size_t size) {
+void %(name)s(uint8_t minval, uint8_t* data, size_t size) {
 
     const __m128i lookup = _mm_setr_epi8(%(lookup_values)s);
+    const __m128i lo     = _mm_set1_epi8(minval);
 
     for (size_t i=0; i < size; i += 16) {
-        const __m128i input = _mm_loadu_si128((const __m128i*)(data + i));
+        const __m128i raw = _mm_loadu_si128((const __m128i*)(data + i));
+        const __m128i input = _mm_sub_epi8(raw, lo);
 
         const __m128i res = _mm_shuffle_epi8(lookup, input);
         _mm_store_si128((__m128i*)(data + i), res);
@@ -117,11 +127,11 @@ void %(name)s(uint8_t* data, size_t size) {
 """
 
 SCALAR_ALGORITHM="""
-void %(name)s(uint8_t* data, size_t size) {
+void %(name)s(uint8_t minval, uint8_t* data, size_t size) {
 
     const double scale = 255.0 / %(value)s;
     for (size_t i=0; i < size; i++)
-        data[i] = scale * data[i];
+        data[i] = scale * (data[i] - minval);
 }
 """
 

@@ -4,6 +4,7 @@
 
 #include "../ansi.cpp"
 #include "scalar.c"
+#include "sse-test.c"
 
 
 class UnitTest {

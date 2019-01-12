@@ -21,7 +21,10 @@ scalar.o: scalar.c
 parameters.txt: find
 	./find > $@
 
-sse-test.c: scripts/generate.py scripts/patterns.py parameters.txt
+sse-test.c: scripts/generate-test.py scripts/generate_base.py scripts/patterns.py parameters.txt
+	python scripts/generate-test.py parameters.txt $@
+
+sse-implementation.c: scripts/generate.py scripts/generate_base.py scripts/patterns.py parameters.txt
 	python scripts/generate.py parameters.txt $@
 
 test: sse-test.c

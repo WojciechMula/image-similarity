@@ -6,6 +6,7 @@
 extern "C" {
 
     #include "original.h"
+    #include "specialisations.h"
 }
 
 
@@ -19,7 +20,8 @@ public:
 
         const size_t repeat = 10000;
 
-        BEST_TIME(/**/, similarity_generic(&a, &b), "generic", repeat, 1);
+        BEST_TIME(/**/, similarity_generic(&a, &b),         "generic",          repeat, 1);
+        BEST_TIME(/**/, similarity_specialisations(&a, &b), "specialisations",  repeat, 1);
     }
 
 };

@@ -12,3 +12,5 @@ original.o: original.c original.h
 specialisations.o: specialisations.c specialisations.h
 	$(CC) $(FLAGS) $< -c -o $@
 
+sse-blocking.o: sse-blocking.c sse-blocking.h
+	$(CC) $(FLAGS) $< -c -o $@

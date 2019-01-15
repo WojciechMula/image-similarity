@@ -5,7 +5,7 @@
 
 #define DEFINE_COMPARE(suffix, ROW_EXPR, COL_EXPR)                                                  \
     static uint64_t similarity_##suffix(SimilarityData* a, SimilarityData* b, uint64_t max) {       \
-        int sim = 0;                                                                                \
+        uint64_t sim = 0;                                                                           \
         for (int i=0; i < 32; i++) {                                                                \
             for (int j=0; j < 32; j++) {                                                            \
                 const size_t ofs_a = i * 32 + j;                                                    \
@@ -14,7 +14,7 @@
                 sim += abs((int)a->avg_g[ofs_a] - (int)b->avg_g[ofs_b]);                            \
                 sim += abs((int)a->avg_b[ofs_a] - (int)b->avg_b[ofs_b]);                            \
             }                                                                                       \
-            if (sim > max) return MAX_DIFF;                                                                                \
+            if (sim > max) return MAX_DIFF;                                                         \
         }                                                                                           \
         return sim;                                                                                 \
     }

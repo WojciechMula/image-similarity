@@ -7,6 +7,7 @@ extern "C" {
 
     #include "original.h"
     #include "specialisations.h"
+    #include "sse-comparison.h"
 }
 
 
@@ -22,6 +23,7 @@ public:
 
         BEST_TIME(/**/, similarity_generic(&a, &b),         "generic",          repeat, 1);
         BEST_TIME(/**/, similarity_specialisations(&a, &b), "specialisations",  repeat, 1);
+        BEST_TIME(/**/, similarity_sse(&a, &b),             "SSE",              repeat, 1);
     }
 
 };
